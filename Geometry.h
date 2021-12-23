@@ -71,7 +71,8 @@ public:
 	float getX() const;
 	float getY() const;
 
-    // Overriding methods
+    // Override
+    //SetDepth n GetDepth
     int  dim() const override final;
     void translate(float x, float y) override final;
     void rotate() override final;
@@ -103,30 +104,35 @@ public:
 	// Return the length of the line segment
 	float length() const;
 
+    // Override
+    int  dim() const override final;
+    void translate(float x, float y) override final;
+    void rotate() override final;
+    void scale(float f) override final;
+    bool contains(const Point& p) const override final;
+
 private:
 	// add any member variables you need
+
+    // End-points coordinates
+    float x1, y1 , x2, y2;
 };
 
+
+
+// Abstract class
 class TwoDShape : public Shape {
 
 public:
-	// Default constructor.
-	// Similar comment to Student default constructor applies
-	TwoDShape();
-
-	// Constructor specifying the depth d
 	TwoDShape(int d);
 
-	// Return the area of the object
-	float area() const;
-
-protected:
-private:
-	// add any protected/private member variables you need
-
-    //Object depth
-    int depth;
+    // All 2DShapes are 2 dimensioned, So, no further inheritance required.
+	int dim() const override final;
+    
+    // Both rectangle and circle has an area attribute, hence area() declared as virtual to be overriden.
+    virtual float area() const = 0;
 };
+
 
 class Rectangle : public TwoDShape {
 

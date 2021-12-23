@@ -2,8 +2,6 @@
 
 // ============ Shape class =================
 
-Shape::Shape() {} // REMOVE ME
-
 Shape::Shape(int d) {
     if (d < 0)
         throw std::invalid_argument("Negative depth not allowed!");
@@ -48,19 +46,24 @@ bool Shape::contains(const Point& p) const {
 
 // =============== Point class ================
 
-Point::Point(float x, float y, int d) {
-	// IMPLEMENT ME
+Point::Point(float x, float y, int d) : Shape(d) {
+    this->distX = x;
+    this->distY = y;
 }
 
 float Point::getX() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return distX;
 }
 
+
 float Point::getY() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return distY;
 }
+
+int Point::dim() const {
+    return 0;
+}
+
 
 // =========== LineSegment class ==============
 
@@ -94,8 +97,6 @@ float LineSegment::length() const {
 }
 
 // ============ TwoDShape class ================
-
-TwoDShape::TwoDShape(){} // REMOVE ME
 
 TwoDShape::TwoDShape(int d) {
 	// IMPLEMENT ME
