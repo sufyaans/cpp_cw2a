@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 
+
 class Point; // forward declaration
 
 class Shape {
@@ -25,21 +26,27 @@ public:
 	int getDepth() const;
 
 	// Return the dimension of the object (0, 1 or 2)
-	int dim() const;
+	//int dim() const;
+    
+    // Get object dimension
+	virtual int  dim() const = 0;
 
 	// Translate the object horizontally by x and vertically by y
-	void translate(float x, float y);
+	//void translate(float x, float y);
+
+    // Translate the object by x and y
+	virtual void translate(float x, float y) = 0;
 
 	// Rotate the object 90 degrees around its centre
-	void rotate();
+	virtual void rotate() = 0;  
 
 	// Scale the object by a factor f relative to its centre.
 	// If f is zero or negative, throw a std::invalid-argument exception.
-	void scale(float f);
+	virtual void scale(float f) = 0;
 
 	// Return true if the object contains p and false otherwise.
 	// Depths are ignored for purpose of comparison
-	bool contains(const Point& p) const;
+	virtual bool contains(const Point& p) const = 0; 
 
 	// the constant pi
 	static constexpr double PI = 3.1415926;
@@ -47,7 +54,12 @@ public:
 protected:
 private:
 	// add any protected/private member variables you need
+
+    //Object depth
+    int depth;
 };
+
+
 
 class Point : public Shape {
 
@@ -59,8 +71,18 @@ public:
 	float getX() const;
 	float getY() const;
 
+    // Overriding methods
+    int  dim() const override final;
+    void translate(float x, float y) override final;
+    void rotate() override final;
+    void scale(float f) override final;
+    bool contains(const Point& p) const override final;
+
 private:
 	// add any member variables you need
+    
+    // Coordinates of the point
+    float distX, distY;
 };
 
 class LineSegment : public Shape {
@@ -101,6 +123,9 @@ public:
 protected:
 private:
 	// add any protected/private member variables you need
+
+    //Object depth
+    int depth;
 };
 
 class Rectangle : public TwoDShape {

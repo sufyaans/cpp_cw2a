@@ -5,18 +5,24 @@
 Shape::Shape() {} // REMOVE ME
 
 Shape::Shape(int d) {
-	// IMPLEMENT ME
+    if (d < 0)
+        throw std::invalid_argument("Negative depth not allowed!");
+    
+    depth = d;
 }
 
 bool Shape::setDepth(int d) {
-	// IMPLEMENT ME
-	return false; // dummy
+    if (d < 0)
+        return false;
+    
+    depth = d;
+    return true;
 }
 
 int Shape::getDepth() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return depth;
 }
+
 
 int Shape::dim() const {
 	// IMPLEMENT ME
