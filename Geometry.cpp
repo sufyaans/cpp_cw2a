@@ -1,4 +1,13 @@
+#include <math.h>
+#include <map>
 #include "Geometry.h"
+
+
+inline void swap(float& x, float& y) { 
+    float temp { x };
+    x = y;
+    y = temp;
+}
 
 // ============ Shape class =================
 
