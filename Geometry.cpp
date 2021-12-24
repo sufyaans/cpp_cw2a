@@ -64,36 +64,160 @@ int Point::dim() const {
     return 0;
 }
 
+void Point::translate(float x, float y) {
+    // Increment/Decrement point's coordinate by x and y
+    this->distX += x;
+    this->distY += y;
+}
+
+void Point::rotate() {} // Rotation of a point has no effect
+
+void Point::scale(float f) { //no effect on POINT
+    if (f <= 0)
+        throw std::invalid_argument("Negative scale factor"); 
+}
+
+bool Point::contains(const Point& p) const {
+	bool res = false;
+	if(p.getX() == distX && p.getY() == distY){
+		res = true;
+	}
+	return res;
+}
+
 
 // =========== LineSegment class ==============
 
-LineSegment::LineSegment(const Point& p, const Point& q) {
-	// IMPLEMENT ME
+LineSegment::LineSegment(const Point& p, const Point& q) : Shape(0) { // Call Shape() ctor to set depth temporarily as 0
+    // Exceptions
+    if (p.getDepth() != q.getDepth())
+        throw std::invalid_argument("Points depth mismatch");
+    else if (p.getX() != q.getX() && p.getY() != q.getY())
+        throw std::invalid_argument("Line is not axis-aligned");
+    else if (p.getX() == q.getX() && p.getY() == q.getY())
+        throw std::invalid_argument("Points conincide");
+
+    // Set depth as the points are valid
+    setDepth(p.getDepth());
+
+    if (p.getX() != q.getX()) { // Line parallel to Y-axis
+        y1 = y2 = p.getY();
+        
+        x1 = std::min(p.getX(), q.getX());
+        x2 = std::max(p.getX(), q.getX());
+    }
+    else {                      // Line parallel to X-axis
+        x1 = x2 = p.getX();
+        
+        y1 = std::min(p.getY(), q.getY());
+        y2 = std::max(p.getY(), q.getY());
+    }
 }
 
 float LineSegment::getXmin() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return x1;
 }
 
 float LineSegment::getXmax() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return x2;
 }
 
 float LineSegment::getYmin() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return y1;
 }
 
 float LineSegment::getYmax() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return y2;
 }
 
 float LineSegment::length() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    // Distance formula
+	float ans = sqrtf(powf(x2 - x1, 2) + powf(y2 - y1, 2));
+	return ans;
+}
+
+int LineSegment::dim() const {
+    // A line segment is 1 dimensional
+    return 1;
+}
+
+void LineSegment::translate(float x, float y) {
+    // Increment/Decrement both the point's coordinates by x and y
+    x1 += x;
+	y1 += y;
+    x2 += x; 
+	y2 += y;
+}
+
+void LineSegment::rotate() {
+    float midX, midY;
+    float tempX, tempY;
+    
+    if (x1 == x2) {
+        swap(x1, x2);
+        swap(y1, y2);
+    }
+    
+    midX = (x1 + x2) / 2;
+    midY = (y1 + y2) / 2;
+
+    x1 -= midX; 
+	y1 -= midY;
+    x2 -= midX; 
+	y2 -= midY;
+
+    tempX = x1 ; 
+	tempY = y1;
+    
+	x1 =- tempY; 
+	y1 = tempX; 
+
+    tempX = x2; 
+	tempY = y2;
+    
+	x2 =- tempY; 
+	y2 = tempX; 
+
+    x1 += midX; 
+	y1 += midY;
+    
+	x2 += midX; 
+	y2 += midY;
+}
+
+void LineSegment::scale(float f) {
+    float midX, midY;
+    
+    if (f <= 0)
+        throw std::invalid_argument("Negative scale factor");
+    
+    midX = (x1 + x2) / 2;
+    midY = (y1 + y2) / 2;
+
+    x1 -= midX; 
+	y1 -= midY;
+
+    x2 -= midX; 
+	y2 -= midY;
+    
+    x1 *= f; 
+	y1 *= f;
+
+    x2 *= f; 
+	y2 *= f;
+    
+    x1 += midX; 
+	y1 += midY;
+
+    x2 += midX; 
+	y2 += midY;
+}
+
+bool LineSegment::contains(const Point& p) const {
+    if (x1 != x2) 
+        return (p.getY() == y1 && p.getX() >= std::min(x1, x2) && p.getX() <= std::max(x1, x2));
+    else     
+        return (p.getX() == x1 && p.getY() >= std::min(y1, y2) && p.getY() <= std::max(y1, y2));
 }
 
 // ============ TwoDShape class ================
