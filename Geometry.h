@@ -164,8 +164,16 @@ public:
 	float getY() const;
 	float getR() const;
 
+    //Overrides
+    void  translate(float x, float y) override final;
+    void  rotate() override final;
+    void  scale(float f) override final;
+    bool  contains(const Point& p) const override final;
+	float area() const override final;
+
 private:
 	// add any member variables you need
+    float x, y, radius;
 };
 
 

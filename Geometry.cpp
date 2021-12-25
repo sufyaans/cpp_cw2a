@@ -265,8 +265,16 @@ float Rectangle::getYmax() const {
 
 // ================== Circle class ===================
 
-Circle::Circle(const Point& c, float r) {
-	// IMPLEMENT ME
+Circle::Circle(const Point& c, float r) : TwoDShape(0) {
+    if (r <= 0)
+        throw std::invalid_argument("Invalid argument!");
+    
+    setDepth(c.getDepth());
+    
+    x = c.getX();
+    y = c.getY();
+    
+    radius = r;
 }
 
 float Circle::getX() const {
