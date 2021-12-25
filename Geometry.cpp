@@ -231,13 +231,10 @@ bool LineSegment::contains(const Point& p) const {
 
 // ============ TwoDShape class ================
 
-TwoDShape::TwoDShape(int d) {
-	// IMPLEMENT ME
-}
+TwoDShape::TwoDShape(int d) : Shape(d) {}
 
-float TwoDShape::area() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+int TwoDShape::dim() const {
+    return 2;
 }
 
 // ============== Rectangle class ================
