@@ -73,11 +73,11 @@ public:
 
     // Override
     //SetDepth n GetDepth
-    int  dim() const override final;
-    void translate(float x, float y) override final;
-    void rotate() override final;
-    void scale(float f) override final;
-    bool contains(const Point& p) const override final;
+    int  dim() const override;
+    void translate(float x, float y) override;
+    void rotate() override;
+    void scale(float f) override;
+    bool contains(const Point& p) const override;
 
 private:
 	// add any member variables you need
@@ -105,11 +105,11 @@ public:
 	float length() const;
 
     // Override
-    int  dim() const override final;
-    void translate(float x, float y) override final;
-    void rotate() override final;
-    void scale(float f) override final;
-    bool contains(const Point& p) const override final;
+    int  dim() const override;
+    void translate(float x, float y) override;
+    void rotate() override;
+    void scale(float f) override;
+    bool contains(const Point& p) const override;
 
 private:
 	// add any member variables you need
@@ -165,11 +165,11 @@ public:
 	float getR() const;
 
     //Overrides
-    void  translate(float x, float y) override final;
-    void  rotate() override final;
-    void  scale(float f) override final;
-    bool  contains(const Point& p) const override final;
-	float area() const override final;
+    void  translate(float x, float y) override;
+    void  rotate() override;
+    void  scale(float f) override;
+    bool  contains(const Point& p) const override;
+	float area() const override;
 
 private:
 	// add any member variables you need
