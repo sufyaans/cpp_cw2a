@@ -278,18 +278,15 @@ Circle::Circle(const Point& c, float r) : TwoDShape(0) {
 }
 
 float Circle::getX() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return x;
 }
 
 float Circle::getY() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return y;
 }
 
 float Circle::getR() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return radius;
 }
 
 // ================= Scene class ===================
