@@ -289,6 +289,33 @@ float Circle::getR() const {
     return radius;
 }
 
+float Circle::area() const {
+    // Area (Circle) = πr2
+    return PI * (radius * radius);
+}
+
+void Circle::translate(float x, float y) {
+    this->x += x;
+    this->y += y;
+}
+
+void Circle::rotate() { } 
+
+void Circle::scale(float f) {
+    if (f <= 0)
+        throw std::invalid_argument("Negative scale factor");
+    
+    radius *= f;
+}
+
+bool Circle::contains(const Point& p) const {
+    float dist;
+    
+    dist = sqrtf(powf(p.getX() - x, 2) + powf(p.getY() - y, 2));
+    
+    return (dist <= radius);
+}
+
 // ================= Scene class ===================
 
 Scene::Scene() {
