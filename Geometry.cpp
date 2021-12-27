@@ -239,8 +239,42 @@ int TwoDShape::dim() const {
 
 // ============== Rectangle class ================
 
-Rectangle::Rectangle(const Point& p, const Point& q) {
-	// IMPLEMENT ME
+Rectangle::Rectangle(const Point& p, const Point& q) : TwoDShape(0) {
+    if (p.getDepth() != q.getDepth())
+        throw std::invalid_argument("Depth mismatch");
+    else if (p.getX() == q.getX() || p.getY() == q.getY())
+        throw std::invalid_argument("Lines coincide");
+    
+    setDepth(p.getDepth());
+    
+    if (p.getX() < q.getX() && p.getY() < q.getY()) {       // Px < Qx, Py < Qy
+        x1 = p.getX(); y1 = p.getY();
+        x3 = q.getX(); y3 = q.getY();
+        
+        x2 = q.getX(); y2 = p.getY();
+        x4 = p.getX(); y4 = q.getY();
+    }
+    else if (p.getX() < q.getX() && p.getY() > q.getY()) {  // Px < Qx, Py > Qy
+        x2 = q.getX(); y2 = q.getY();
+        x4 = p.getX(); y4 = p.getY();
+        
+        x1 = p.getX(); y1 = q.getY();
+        x3 = q.getX(); y3 = p.getY();
+    }
+    else if (p.getX() > q.getX() && p.getY() > q.getY()) {  // Px > Qx, Py > Qy
+        x1 = q.getX(); y1 = q.getY();
+        x3 = p.getX(); y3 = p.getY();
+        
+        x2 = p.getX(); y2 = q.getY();
+        x4 = q.getX(); y4 = p.getY();
+    }
+    else {                                                  // Px > Qx, Py < Qy
+        x2 = p.getX(); y2 = p.getY();
+        x4 = q.getX(); y4 = q.getY();
+        
+        x1 = q.getX(); y1 = p.getY();
+        x3 = p.getX(); y3 = q.getY();
+    }
 }
 
 float Rectangle::getXmin() const {
