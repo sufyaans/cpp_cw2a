@@ -137,20 +137,27 @@ public:
 class Rectangle : public TwoDShape {
 
 public:
-	// Constructor.
-	// If the two points have different depths, or have the same x-
-	// and/or y-coordinate, throw a std::invalid_argument exception
 	Rectangle(const Point& p, const Point& q);
 
-	// Return basic information (see assignment page)
+	// Get corner coordinates
 	float getXmin() const;
 	float getYmin() const;
 	float getXmax() const;
 	float getYmax() const;
 
+    // Overrides
+    void  translate(float x, float y) override;
+    void  rotate() override;
+    void  scale(float f) override;
+    bool  contains(const Point& p) const override;
+    float area() const override;
+
 private:
-	// add any member variables you need
+    float x1, y1, x2, y2, x3, y3, x4, y4;
+
+    float *xCoorArray[4] = { &x1, &x2, &x3, &x4 }, *yCoorArray[4] = { &y1, &y2, &y3, &y4 };
 };
+
 
 class Circle : public TwoDShape {
 
