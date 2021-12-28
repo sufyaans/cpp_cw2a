@@ -30,29 +30,6 @@ int Shape::getDepth() const {
     return depth;
 }
 
-
-int Shape::dim() const {
-	// IMPLEMENT ME
-	return -999; // dummy
-}
-
-void Shape::translate(float x, float y) {
-	// IMPLEMENT ME
-}
-
-void Shape::rotate() {
-	// IMPLEMENT ME
-}
-
-void Shape::scale(float f) {
-	// IMPLEMENT ME
-}
-
-bool Shape::contains(const Point& p) const {
-	// IMPLEMENT ME
-	return false; // dummy
-}
-
 // =============== Point class ================
 
 Point::Point(float x, float y, int d) : Shape(d) {
@@ -278,24 +255,21 @@ Rectangle::Rectangle(const Point& p, const Point& q) : TwoDShape(0) {
 }
 
 float Rectangle::getXmin() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return x1;
 }
 
 float Rectangle::getYmin() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return y1;
 }
 
 float Rectangle::getXmax() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return x3;
 }
 
 float Rectangle::getYmax() const {
-	// IMPLEMENT ME
-	return -999; // dummy
+    return y3;
 }
+
 
 // ================== Circle class ===================
 
