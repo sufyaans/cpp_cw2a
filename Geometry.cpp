@@ -270,6 +270,74 @@ float Rectangle::getYmax() const {
     return y3;
 }
 
+float Rectangle::area() const {
+    return sqrtf(powf(x2 - x1, 2) + powf(y2 - y1, 2)) * sqrtf(powf(x3 - x2, 2) + powf(y3 - y2, 2));
+}
+
+void Rectangle::translate(float x, float y) {
+    for (size_t i {0}; i < 4; i++) {
+        *xCoorArray[i] += x;
+        *yCoorArray[i] += y;
+    }
+}
+
+void Rectangle::rotate() {
+    float midX, midY, xTemp, yTemp;
+    
+    midX = (x1 + x2) / 2;
+    midY = (y1 + y4) / 2;
+    
+    // Shift to origin
+    for (size_t i {0}; i < 4; i++) {
+        *xCoorArray[i] -= midX;
+        *yCoorArray[i] -= midY;
+    }
+    
+    for (size_t i {0}; i < 4; i++) {
+        xTemp = *xCoorArray[i];
+        yTemp = *yCoorArray[i];
+        
+        *xCoorArray[i] = (0 * xTemp) + (-1 * yTemp) + midX;
+        *yCoorArray[i] = (1 * xTemp) + (0  * yTemp) + midY;
+    }
+    
+    swap(x1, x4); swap(y1, y4);
+    swap(x2, x3); swap(y2, y3);
+    
+    if (y1 != y2) {
+        swap(x2, x4);
+        swap(y2, y4);
+    }
+}
+
+void Rectangle::scale(float f) {
+    if (f <= 0)
+        throw std::invalid_argument("Negative scale factor");
+
+    float midX, midY;
+    
+    midX = (x1 + x2) / 2;
+    midY = (y1 + y4) / 2;
+    
+    for (size_t i {0}; i < 4; i++) {
+        *xCoorArray[i] -= midX;
+        *yCoorArray[i] -= midY;
+    }
+    
+    for (size_t i {0}; i < 4; i++) {
+        *xCoorArray[i] *= f;
+        *yCoorArray[i] *= f;
+    }
+    
+    for (size_t i {0}; i < 4; i++) {
+        *xCoorArray[i] += midX;
+        *yCoorArray[i] += midY;
+    }
+}
+
+bool Rectangle::contains(const Point& p) const {
+    return (p.getX() >= x1 && p.getX() <= x3 && p.getY() >= y1 && p.getY() <= y3);
+}
 
 // ================== Circle class ===================
 
