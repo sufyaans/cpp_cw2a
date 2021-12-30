@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <memory>
+#include <map>
+#include <vector>
 
 
 class Point; // forward declaration
@@ -127,7 +129,7 @@ public:
 	TwoDShape(int d);
 
     // All 2DShapes are 2 dimensioned, So, no further inheritance required.
-	int dim() const override final;
+	int dim() const override;
     
     // Both rectangle and circle has an area attribute, hence area() declared as virtual to be overriden.
     virtual float area() const = 0;
