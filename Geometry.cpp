@@ -343,7 +343,7 @@ bool Rectangle::contains(const Point& p) const {
 
 Circle::Circle(const Point& c, float r) : TwoDShape(0) {
     if (r <= 0)
-        throw std::invalid_argument("Invalid argument!");
+        throw std::invalid_argument("Invalid argument");
     
     setDepth(c.getDepth());
     
@@ -395,18 +395,59 @@ bool Circle::contains(const Point& p) const {
 // ================= Scene class ===================
 
 Scene::Scene() {
-	// IMPLEMENT ME
+    hasCustomDepth = false;    
+    drawDepth = -1;
 }
 
 void Scene::addObject(std::shared_ptr<Shape> ptr) {
-	// IMPLEMENT ME
+    int depth = ptr->getDepth();
+    
+    if (objectList.find(depth) != objectList.end()) {
+        objectList[depth].push_back(ptr);
+    }
+    else {
+        objectList[depth] = std::vector<std::shared_ptr<Shape>>(1, ptr);
+    }
 }
 
 void Scene::setDrawDepth(int depth) {
-	// IMPLEMENT ME
+	if (depth < 0)
+        throw std::invalid_argument("Negative depth!");
+    
+    hasCustomDepth = true;
+    
+    drawDepth = depth;
 }
 
-std::ostream& operator<<(std::ostream& out, const Scene& s) {
-	// IMPLEMENT ME
+bool CheckEmpty(const Scene& s, const Point& p) {
+   
+    for (auto P: s.objectList) {
+        for (auto listItem: P.second) {
+        
+            if (s.hasCustomDepth && s.drawDepth < listItem->getDepth())
+                    return false;
+        
+            if (listItem->contains(p))
+                return true;
+        }
+    }
+    
+    return false;
+}
+
+
+    for (int a {0}; a < s.HEIGHT; a++) {
+        for (int b {0}; b < s.WIDTH; b++) {
+            
+            Point currentPosition (b, s.HEIGHT - a - 1);
+            
+            if (CheckEmpty(s, currentPosition))
+                out << '*';
+            else
+                out << ' ';
+        }
+        out << std::endl;
+    }
+    
 	return out;
 }

@@ -205,6 +205,16 @@ public:
 private:
 	// add any member variables you need
 
+	// Once turned on, objects with depths no greater than the drawDepth wil be drawn
+    bool hasCustomDepth;
+
+	// Used map to group objects associated with same depth
+    // Mapped int (depth) to list of pointers to Shape object (vector<pointers>) for constant time retrieval O(1)
+    std::map< int, std::vector<std::shared_ptr<Shape>> > objectList;
+
+	// Redirect the coordinate plane to output stream object "out"
+    friend std::ostream& operator<<(std::ostream& out, const Scene& s);
+
 	// Draw objects as specified in the assignment page
 friend std::ostream& operator<<(std::ostream& out, const Scene& s);
 };
