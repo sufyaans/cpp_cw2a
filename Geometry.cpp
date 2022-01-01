@@ -1,14 +1,15 @@
 #include <math.h>
 #include <map>
+
 #include "Geometry.h"
 
 
+// swap function to swap two values
 inline void swap(float& x, float& y) { 
     float temp { x };
     x = y;
     y = temp;
 }
-
 // ============ Shape class =================
 
 Shape::Shape(int d) {
@@ -30,9 +31,12 @@ int Shape::getDepth() const {
     return depth;
 }
 
+
 // =============== Point class ================
 
-Point::Point(float x, float y, int d) : Shape(d) {
+Point::Point(float x, float y, int d) : Shape(d) {  
+    
+
     this->distX = x;
     this->distY = y;
 }
@@ -40,7 +44,6 @@ Point::Point(float x, float y, int d) : Shape(d) {
 float Point::getX() const {
     return distX;
 }
-
 
 float Point::getY() const {
     return distY;
@@ -56,9 +59,12 @@ void Point::translate(float x, float y) {
     this->distY += y;
 }
 
-void Point::rotate() {} // Rotation of a point has no effect
+void Point::rotate() {} 
+// Rotation of a point has no effect
 
-void Point::scale(float f) { //no effect on POINT
+void Point::scale(float f) { 
+    
+
     if (f <= 0)
         throw std::invalid_argument("Negative scale factor"); 
 }
@@ -74,7 +80,9 @@ bool Point::contains(const Point& p) const {
 
 // =========== LineSegment class ==============
 
-LineSegment::LineSegment(const Point& p, const Point& q) : Shape(0) { // Call Shape() ctor to set depth temporarily as 0
+LineSegment::LineSegment(const Point& p, const Point& q) : Shape(0) { 
+    
+
     // Exceptions
     if (p.getDepth() != q.getDepth())
         throw std::invalid_argument("Points depth mismatch");
@@ -86,13 +94,15 @@ LineSegment::LineSegment(const Point& p, const Point& q) : Shape(0) { // Call Sh
     // Set depth as the points are valid
     setDepth(p.getDepth());
 
-    if (p.getX() != q.getX()) { // Line parallel to Y-axis
+    if (p.getX() != q.getX()) { 
+        // Line parallel to Y-axis
         y1 = y2 = p.getY();
         
         x1 = std::min(p.getX(), q.getX());
         x2 = std::max(p.getX(), q.getX());
     }
-    else {                      // Line parallel to X-axis
+    else {                      
+        // Line parallel to X-axis
         x1 = x2 = p.getX();
         
         y1 = std::min(p.getY(), q.getY());
@@ -206,6 +216,7 @@ bool LineSegment::contains(const Point& p) const {
         return (p.getX() == x1 && p.getY() >= std::min(y1, y2) && p.getY() <= std::max(y1, y2));
 }
 
+
 // ============ TwoDShape class ================
 
 TwoDShape::TwoDShape(int d) : Shape(d) {}
@@ -224,28 +235,32 @@ Rectangle::Rectangle(const Point& p, const Point& q) : TwoDShape(0) {
     
     setDepth(p.getDepth());
     
-    if (p.getX() < q.getX() && p.getY() < q.getY()) {       // Px < Qx, Py < Qy
+    if (p.getX() < q.getX() && p.getY() < q.getY()) {       
+        // Px < Qx, Py < Qy
         x1 = p.getX(); y1 = p.getY();
         x3 = q.getX(); y3 = q.getY();
         
         x2 = q.getX(); y2 = p.getY();
         x4 = p.getX(); y4 = q.getY();
     }
-    else if (p.getX() < q.getX() && p.getY() > q.getY()) {  // Px < Qx, Py > Qy
+    else if (p.getX() < q.getX() && p.getY() > q.getY()) {  
+        // Px < Qx, Py > Qy
         x2 = q.getX(); y2 = q.getY();
         x4 = p.getX(); y4 = p.getY();
         
         x1 = p.getX(); y1 = q.getY();
         x3 = q.getX(); y3 = p.getY();
     }
-    else if (p.getX() > q.getX() && p.getY() > q.getY()) {  // Px > Qx, Py > Qy
+    else if (p.getX() > q.getX() && p.getY() > q.getY()) {  
+        // Px > Qx, Py > Qy
         x1 = q.getX(); y1 = q.getY();
         x3 = p.getX(); y3 = p.getY();
         
         x2 = p.getX(); y2 = q.getY();
         x4 = q.getX(); y4 = p.getY();
     }
-    else {                                                  // Px > Qx, Py < Qy
+    else {                                                  
+        // Px > Qx, Py < Qy
         x2 = p.getX(); y2 = p.getY();
         x4 = q.getX(); y4 = q.getY();
         
@@ -310,6 +325,7 @@ void Rectangle::rotate() {
     }
 }
 
+
 void Rectangle::scale(float f) {
     if (f <= 0)
         throw std::invalid_argument("Negative scale factor");
@@ -339,11 +355,12 @@ bool Rectangle::contains(const Point& p) const {
     return (p.getX() >= x1 && p.getX() <= x3 && p.getY() >= y1 && p.getY() <= y3);
 }
 
+
 // ================== Circle class ===================
 
 Circle::Circle(const Point& c, float r) : TwoDShape(0) {
     if (r <= 0)
-        throw std::invalid_argument("Invalid argument");
+        throw std::invalid_argument("Invalid argument!");
     
     setDepth(c.getDepth());
     
@@ -364,6 +381,7 @@ float Circle::getY() const {
 float Circle::getR() const {
     return radius;
 }
+
 
 float Circle::area() const {
     // Area (Circle) = πr2
@@ -395,7 +413,8 @@ bool Circle::contains(const Point& p) const {
 // ================= Scene class ===================
 
 Scene::Scene() {
-    hasCustomDepth = false;    
+    hasCustomDepth = false;
+    
     drawDepth = -1;
 }
 
@@ -435,7 +454,7 @@ bool CheckEmpty(const Scene& s, const Point& p) {
     return false;
 }
 
-
+std::ostream& operator<<(std::ostream& out, const Scene& s) {
     for (int a {0}; a < s.HEIGHT; a++) {
         for (int b {0}; b < s.WIDTH; b++) {
             

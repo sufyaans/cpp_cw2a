@@ -6,9 +6,10 @@
 #include <map>
 #include <vector>
 
+class Point;
 
-class Point; // forward declaration
 
+// Abstract class
 class Shape {
 
 public:
@@ -19,48 +20,38 @@ public:
 	// Constructor specifying the depth of the object.
 	// If d is negative, throw a std::invalid_argument exception.
 	Shape(int d);
-
-	// Set depth of object to d. If d is negative, return false and
+    
+    // Set depth of object to d. If d is negative, return false and
 	// do not update depth. Otherwise return true
 	bool setDepth(int d);
-
-	// Return the depth of object
+	
+    // Return the depth of object
 	int getDepth() const;
 
-	// Return the dimension of the object (0, 1 or 2)
-	//int dim() const;
-    
     // Get object dimension
 	virtual int  dim() const = 0;
-
-	// Translate the object horizontally by x and vertically by y
-	//void translate(float x, float y);
-
+    
     // Translate the object by x and y
 	virtual void translate(float x, float y) = 0;
 
-	// Rotate the object 90 degrees around its centre
-	virtual void rotate() = 0;  
+    // Rotate the object 90 degrees around its centre    
+	virtual void rotate() = 0;                       
 
-	// Scale the object by a factor f relative to its centre.
-	// If f is zero or negative, throw a std::invalid-argument exception.
-	virtual void scale(float f) = 0;
+     // Scale the object by a factor f relative to its centre
+	virtual void scale(float f) = 0;   
 
-	// Return true if the object contains p and false otherwise.
-	// Depths are ignored for purpose of comparison
+    // Check if the object contains p             
 	virtual bool contains(const Point& p) const = 0; 
-
-	// the constant pi
+    
+    // the constant pi
 	static constexpr double PI = 3.1415926;
 
 protected:
 private:
-	// add any protected/private member variables you need
 
-    //Object depth
-    int depth;
+	//Object depth
+    int depth;                                 
 };
-
 
 
 class Point : public Shape {
@@ -73,8 +64,7 @@ public:
 	float getX() const;
 	float getY() const;
 
-    // Override
-    //SetDepth n GetDepth
+    // Overrides
     int  dim() const override;
     void translate(float x, float y) override;
     void rotate() override;
@@ -82,19 +72,16 @@ public:
     bool contains(const Point& p) const override;
 
 private:
-	// add any member variables you need
-    
     // Coordinates of the point
     float distX, distY;
 };
+
 
 class LineSegment : public Shape {
 
 public:
 	// Constructor.
-	// If the two points have different depths, or have the same x- and
-	// y-coordinate, or if the line is not axis-aligned, throw a
-	// std::invalid_argument exception
+	// If the two points have different depths, or have the same x- and y-coordinate, or if the line is not axis-aligned, throw a std::invalid_argument exception
 	LineSegment(const Point& p, const Point& q);
 
 	// Return basic information (see assignment page)
@@ -105,8 +92,8 @@ public:
 
 	// Return the length of the line segment
 	float length() const;
-
-    // Override
+    
+    // Overrides
     int  dim() const override;
     void translate(float x, float y) override;
     void rotate() override;
@@ -114,12 +101,9 @@ public:
     bool contains(const Point& p) const override;
 
 private:
-	// add any member variables you need
-
     // End-points coordinates
     float x1, y1 , x2, y2;
 };
-
 
 
 // Abstract class
@@ -162,18 +146,17 @@ private:
 
 
 class Circle : public TwoDShape {
-
 public:
-	// Constructor.
-	// If r is zero or negative, throw a std::invalid-argument exception.
 	Circle(const Point& c, float r);
 
-	// Return basic information (see assignment page)
+	// Get center point of the circle
 	float getX() const;
 	float getY() const;
-	float getR() const;
+    
+	// Get radius of the circle
+    float getR() const;
 
-    //Overrides
+    // Overrides
     void  translate(float x, float y) override;
     void  rotate() override;
     void  scale(float f) override;
@@ -181,7 +164,6 @@ public:
 	float area() const override;
 
 private:
-	// add any member variables you need
     float x, y, radius;
 };
 
@@ -189,7 +171,6 @@ private:
 class Scene {
 
 public:
-	// Constructor
 	Scene();
 
 	// Add the pointer to the collection of pointers stored
@@ -203,20 +184,22 @@ public:
 	static constexpr int HEIGHT = 20;
 
 private:
-	// add any member variables you need
-
-	// Once turned on, objects with depths no greater than the drawDepth wil be drawn
+    // Once turned on, objects with depths no greater than the drawDepth wil be drawn
     bool hasCustomDepth;
 
-	// Used map to group objects associated with same depth
+    // Specifies the master drawing depth
+    int  drawDepth;
+
+    // Used map to group objects associated with same depth
     // Mapped int (depth) to list of pointers to Shape object (vector<pointers>) for constant time retrieval O(1)
     std::map< int, std::vector<std::shared_ptr<Shape>> > objectList;
+    
 
-	// Redirect the coordinate plane to output stream object "out"
+    // Redirect the coordinate plane to output stream object "out"
     friend std::ostream& operator<<(std::ostream& out, const Scene& s);
 
-	// Draw objects as specified in the assignment page
-friend std::ostream& operator<<(std::ostream& out, const Scene& s);
+    // Checks if a cell in the plane should be shaded or marked empty
+    friend bool CheckEmpty(const Scene& s, const Point& p);
 };
 
 #endif /* GEOMETRY_H_ */
