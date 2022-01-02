@@ -4,7 +4,7 @@
 #include "Geometry.h"
 
 
-// swap function to swap two values
+
 inline void swap(float& x, float& y) { 
     float temp { x };
     x = y;
